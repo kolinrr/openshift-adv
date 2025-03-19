@@ -1,0 +1,23 @@
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: prometheus
+  namespace: monitoring
+spec:
+  to:
+    kind: Service
+    name: prometheus
+  port:
+    targetPort: 9090
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: grafana
+  namespace: monitoring
+spec:
+  to:
+    kind: Service
+    name: grafana
+  port:
+    targetPort: 3000

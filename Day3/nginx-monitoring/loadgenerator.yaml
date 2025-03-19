@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: artillery
+  namespace: monitoring
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: artillery
+  template:
+    metadata:
+      labels:
+        app: artillery
+    spec:
+      containers:
+      - name: artillery
+        image: artilleryio/artillery
+        command: ["sh", "-c"]
+        args:
+          - |
+            echo '{
+              "config": { "target": "http://nginx-metrics:8080", "phases": [ { "duration": 600, "arrivalRate": 5 } ] },
+              "scenarios": [ { "flow": [ { "get": { "url": "/metrics" } } ] } ]
+            }' > /test-script.yml;
+            artillery run /test-script.yml
