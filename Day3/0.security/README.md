@@ -55,7 +55,7 @@ You will not be able to connect to different database - security by networkpolic
 oc delete networkpolicy default-deny-all -ndb
 oc delete networkpolicy allow-mysql-ingress-prod -ndb
 
-repeat steps from 2.4
+repeat steps from 2.3 and 2.4
 
 
 This ensures a structured deployment, security and enables easy management across different environments. 
