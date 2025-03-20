@@ -24,3 +24,5 @@ jobs:
           oc get pods || true 
           oc login -u kubeadmin https://api.crc.testing:6443
           oc get pods 
+          crc stop
+          crc delete -y
