@@ -18,3 +18,9 @@ jobs:
 
       - name: list files
         run: ls -a
+
+      - name:  Test oc
+        run: |
+          oc get pods || true 
+          oc login -u kubeadmin https://api.crc.testing:6443
+          oc get pods 
