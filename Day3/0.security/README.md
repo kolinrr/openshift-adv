@@ -21,36 +21,44 @@ oc apply -k overlays/prod
 
 This applies the respective configurations for each namespace.
 
-## **3. Testing Database Connection Between Namespaces**
+## **2. Testing Database Connection Between Namespaces**
 To verify MySQL connectivity between environments:
 
-### **3.1 Open a Shell in the MySQL Pod (dev Namespace)**
+### **2.1 Open a Shell in the MySQL Pod (dev Namespace)**
 ```sh
-oc exec -it mysql-0 -n dev -- sh
+oc exec -it mysql-0 -n db -- sh
 ```
 
-### **3.2 Get the IP Address of a MySQL Pod in `prod`**
+### **2.2 Get the IP Address of a MySQL Pod in `prod`**
 ```sh
-oc get pods -n prod -o wide
+oc get pods -n db -o wide
 ```
-Find the `IP` of the target MySQL pod from the output.
+Find the `IP` of the target MySQL prod pod from the output.
 
-### **3.3 Connect to MySQL in `prod` from `dev`**
+### **2.3 Connect to MySQL in `prod` from `dev`**
 ```sh
 mysql -h <POD-IP> -P 3306 -u root -p
 ```
 
 🔹 **Password:** `password`
 
-### **3.4 Verify MySQL Connection Status**
+### **2.4 Verify MySQL Connection Status**
 Once connected, check the database status using:
 ```sh
 \s
 ```
 This command provides details about the MySQL server, including uptime, connections, and threads.
+You will not be able to connect to different database - security by networkpolicy.
+
+### **2.5 Delete/Deactivate the networkpolicies for DB-Namespaces**
+
+oc delete networkpolicy default-deny-all -ndb
+oc delete networkpolicy allow-mysql-ingress-prod -ndb
+
+repeat steps from 2.4
 
 
-This ensures a structured deployment and enables easy management across different environments. 
+This ensures a structured deployment, security and enables easy management across different environments. 
 
 ---
 **Copyright (c) 2025 by Alexander Kolin. All rights reserved.**
